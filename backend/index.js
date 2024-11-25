@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from  'cors';
 import { app, io, server } from './lib/socket.io.js';
+import { dbConnect } from './lib/db.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -24,4 +25,5 @@ io.on("connection",(socket)=>{
 
 server.listen(PORT, ()=>{
     console.log(`Server is running on PORT: ${PORT}`);
+    dbConnect();
 })
