@@ -1,8 +1,11 @@
 import React from 'react'
+import Login from './pages/Login'
 
 const App = () => {
   return (
-    <div className='text-3xl bg-red-500'>App</div>
+    <div className="w-auto mx-auto px-20 py-10">
+      <Login />
+    </div>
   )
 }
 

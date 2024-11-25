@@ -8,7 +8,6 @@ export const useUserStore = create((set) => ({
   // Set the username
   setUser: (user) => set({ user }),
 
-  // Clear the user
   clearUser: () => {
     set({ user: null, socket: null });
     if (useUserStore.getState().socket) {
@@ -19,12 +18,12 @@ export const useUserStore = create((set) => ({
 
   connectSocket: () => {
     const { user } = useUserStore.getState();
-
+ 
     if (!user) {
       console.error("Cannot connect socket without a username.");
       return;
     }
-
+    
     const socket = io("http://localhost:5000", {
       query: { username: user }, 
       withCredentials: true,   
