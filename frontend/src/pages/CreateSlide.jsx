@@ -64,7 +64,7 @@ const CreateSlide = () => {
       top: 20,
       opacity: 1,
       width: 200,
-      height: 150,
+      height: 200,
       z_index: 2,
       color: "green",
       setCurrentComponent: (a) => setCurrentComponent(a),

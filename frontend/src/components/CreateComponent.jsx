@@ -1,10 +1,55 @@
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
+
 const CreateComponent = ({ info, current_component, removeComponent }) => {
-  const randValue = Math.floor(Math.random() * 100);
-  let html = "";
+  const renderShape = (info) => {
+    // General styles for all shapes
+    const commonStyles = {
+      width: info.type === "triangle" ? "0" : info.width + "px",
+      height: info.type === "triangle" ? "0" : info.height + "px",
+      backgroundColor: info.type === "triangle" ? "transparent" : info.color || "green",
+      opacity: info.opacity,
+      zIndex: info.z_index,
+      top: info.top + "px",
+      left: info.left + "px",
+      position: "absolute",
+      borderRadius: info.type === "circle" ? "50%" : "0%",
+    };
+
+    // Specific styles for triangle
+    const triangleStyles =
+      info.type === "triangle"
+        ? {
+            borderLeft: `${info.width / 2}px solid transparent`,
+            borderRight: `${info.width / 2}px solid transparent`,
+            borderBottom: `${info.height}px solid ${info.color || "green"}`,
+          }
+        : {};
+
+    return (
+      <div
+        onClick={() => info.setCurrentComponent(info)}
+        style={{ ...commonStyles, ...triangleStyles }}
+        className="group hover:border-[2px] hover:border-indigo-500"
+      >
+        {/* Always visible delete icon for the current component */}
+        {current_component.id === info.id && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering parent click
+              removeComponent(info.id);
+            }}
+            className="absolute p-1 bg-gray-800 top-2 right-2 cursor-pointer rounded-md"
+          >
+            <FaTrashAlt className="text-white" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (info.name === "main_frame") {
-    html = (
+    return (
       <div
         onClick={() => info.setCurrentComponent(info)}
         className="hover:border-[2px] hover:border-indigo-500 shadow-md"
@@ -15,41 +60,16 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
           zIndex: info.z_index,
         }}
       >
-         {info.image && <img className="w-full h-full" src={info.image} alt="image" />}
+        {info.image && <img className="w-full h-full" src={info.image} alt="frame" />}
       </div>
     );
   }
-  console.log(info.image)
-  if (info.name === "shape" && info.type === "rect") {
-    html = (
-      <div
-        id={randValue}
-        onClick={() => info.setCurrentComponent(info)}
-        style={{
-          width: info.width + "px",
-          height: info.height + "px",
-          backgroundColor: info.color || "green",
-          borderRadius: info.radius + "%",
-          opacity: info.opacity,
-          zIndex: info.z_index,
-          top: info.top + "px",
-          left: info.left + "px",
-        }}
-        className="absolute group hover:border-[2px] hover:border-indigo-500"
-      >
-        {current_component.id === info.id && (
-          <div
-            onClick={() => removeComponent(info.id)}
-            className="absolute p-1 bg-gray-800 top-0 cursor-pointer group-hover:block hidden rounded-md"
-          >
-            {" "}
-            <FaTrashAlt />{" "}
-          </div>
-        )}
-      </div>
-    );
+
+  if (info.name === "shape" && ["rect", "circle", "triangle"].includes(info.type)) {
+    return renderShape(info);
   }
-  return html;
+
+  return null;
 };
 
 export default CreateComponent;
