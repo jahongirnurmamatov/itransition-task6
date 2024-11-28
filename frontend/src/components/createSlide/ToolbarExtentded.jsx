@@ -13,7 +13,8 @@ const ToolbarExtentded = ({
   show,
   setShow,
   state,
-  createShape
+  createShape,
+  setImage
 }) => {
   return (
     <div
@@ -56,7 +57,7 @@ const ToolbarExtentded = ({
         {state === "project" && <div>project</div>}
         {state === "initImage" && (
           <div className="h-[88vh] overflow-x-auto flex justify-start items-start">
-            <Images />
+            <Images setImage={setImage} />
           </div>
         )}
         {state === "background" && (

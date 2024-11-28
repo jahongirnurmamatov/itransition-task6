@@ -15,12 +15,11 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
           zIndex: info.z_index,
         }}
       >
-        {info.img && (
-          <img className="w-full h-full" src={info.image} alt="image" />
-        )}
+         {info.image && <img className="w-full h-full" src={info.image} alt="image" />}
       </div>
     );
   }
+  console.log(info.image)
   if (info.name === "shape" && info.type === "rect") {
     html = (
       <div

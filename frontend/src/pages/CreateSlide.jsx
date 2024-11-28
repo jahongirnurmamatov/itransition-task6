@@ -34,11 +34,11 @@ const CreateSlide = () => {
   };
 
   const removeBackground = () => {
-    const com = components.find((c) => c.id === current_component.id);
-    const temp = components.filter((c) => c.id !== current_component.id);
-    com.image = "";
-    setImage = "";
-    setComponenets([...temp, com]);
+    const updatedComponents = components.map((c) =>
+      c.id === current_component.id ? { ...c, image: "" } : c
+    );
+    setImage("");
+    setComponenets(updatedComponents);
   };
 
   const [components, setComponenets] = useState([
@@ -72,13 +72,19 @@ const CreateSlide = () => {
     };
     setComponenets([...components, style]);
   };
-  useEffect(()=>{
-    if(current_component){
-        const index = components.findIndex(c=>c.id===current_component.id);
-        components[index].color=color || current_component.color;
-        console.log(components[index])
+
+  useEffect(() => {
+    if (current_component) {
+      const index = components.findIndex((c) => c.id === current_component.id);
+      const temp = components.filter((c) => c.id !== current_component.id);
+      if (current_component.name === "main_frame" && image) {
+        components[index].image = image || current_component.image;
+      }
+      components[index].color = color || current_component.color;
+      setComponenets([...temp, components[index]]);
     }
-  },[color])
+  }, [color, image]);
+
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
@@ -90,6 +96,7 @@ const CreateSlide = () => {
             setShow={setShow}
             state={state}
             createShape={createShape}
+            setImage={setImage}
           />
 
           <div className="w-full h-full flex justify-between">
@@ -132,6 +139,9 @@ const CreateSlide = () => {
                       id="color"
                     />
                   </div>
+                  {(current_component.name==='main_frame' && image) && <div>
+                    <button className="p-[6px] bg-slate-700 text-white rounded-md " onClick={removeBackground}>Remove background</button>
+                    </div>}
                 </div>
               </div>
             )}
