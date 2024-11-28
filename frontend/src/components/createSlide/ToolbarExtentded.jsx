@@ -13,9 +13,7 @@ const ToolbarExtentded = ({
   show,
   setShow,
   state,
-  current_component,
-  components,
-  removeComponent,
+ 
 }) => {
   return (
     <div

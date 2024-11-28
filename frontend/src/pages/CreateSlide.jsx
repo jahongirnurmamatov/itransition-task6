@@ -43,25 +43,19 @@ const CreateSlide = () => {
       setCurrentComponent: (a) => setCurrentComponent(a),
     },
   ]);
+  console.log(current_component);
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
       <div className="flex h-[calc(100%-60px)] w-screen">
         <Toolbar setElements={setElements} show={show} />
         <div className="h-full w-[calc(100%-75px)]">
-          <ToolbarExtentded
-            show={show}
-            setShow={setShow}
-            state={state}
-            current_component={current_component}
-            components={components}
-            removeComponent={removeComponent}
-          />
+          <ToolbarExtentded show={show} setShow={setShow} state={state} />
 
-          <div className="w-full h-full">
+          <div className="w-full h-full flex justify-between">
             <div
-              className={`flex justify-center relative items-center h-full ${
-                current_component
+              className={`flex ml-40 justify-center relative items-center h-full ${
+                !current_component
                   ? "w-full"
                   : "w-[cal(100%-250px)] overflow-hidden"
               }`}
@@ -79,6 +73,11 @@ const CreateSlide = () => {
                 </div>
               </div>
             </div>
+            {current_component && (
+              <div className="h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2">
+                current
+              </div>
+            )}
           </div>
         </div>
       </div>
