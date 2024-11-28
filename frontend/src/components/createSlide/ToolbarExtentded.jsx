@@ -6,6 +6,8 @@ import { FaCircle } from "react-icons/fa";
 import { IoTriangle } from "react-icons/io5";
 import TemplateDesign from "./TemplateDesign";
 import MyImages from "./MyImages";
+import Images from "./Images";
+import Backgrounds from "./Backgrounds";
 const ToolbarExtentded = ({ show, setShow, state }) => {
   return (
     <div className="h-full w-[calc(100%-75px)]">
@@ -39,10 +41,20 @@ const ToolbarExtentded = ({ show, setShow, state }) => {
               <MyImages />
             </div>
           )}
-          {state === "text" && <div>text</div>}
+          {state === "text" && (
+            <div className="grid grid-cols-1 gap-2">
+              <div className="bg-[#3c3c3d] cursor-pointer font-bold p-3 flex items-center justify-center text-white text-xl rounded-sm">
+                <h2>Add a text</h2>
+              </div>
+            </div>
+          )}
           {state === "project" && <div>project</div>}
-          {state === "initImage" && <div>put image</div>}
-          {state === "background" && <div>background</div>}
+          {state === "initImage" && (
+            <div className="h-[88vh] overflow-x-auto flex justify-start items-start">
+              <Images />
+            </div>
+          )}
+          {state === "background" && <div><Backgrounds/></div>}
         </div>
       </div>
     </div>
