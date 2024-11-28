@@ -1,7 +1,8 @@
 import React from "react";
 
 import { RiArrowLeftWideLine } from "react-icons/ri";
-const ToolbarExtentded = ({ show, setShow ,state}) => {
+import TemplateDesign from "./TemplateDesign";
+const ToolbarExtentded = ({ show, setShow, state }) => {
   return (
     <div className="h-full w-[calc(100%-75px)]">
       <div
@@ -17,14 +18,17 @@ const ToolbarExtentded = ({ show, setShow ,state}) => {
           <RiArrowLeftWideLine />
         </div>
         <div className="">
-          {state === "design" && <div>design</div>}
-          {state === "shape" && <div>shape</div>}
+          {state === "design" && (
+            <div className="">
+              <TemplateDesign />
+            </div>
+          )}
+          {state === "shape" && <div >shape</div>}
           {state === "image" && <div>image</div>}
           {state === "text" && <div>text</div>}
           {state === "project" && <div>project</div>}
           {state === "initImage" && <div>put image</div>}
           {state === "background" && <div>background</div>}
-        
         </div>
       </div>
     </div>
