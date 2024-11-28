@@ -1,6 +1,9 @@
 import React from "react";
-
+import { LiaSquareSolid } from "react-icons/lia";
 import { RiArrowLeftWideLine } from "react-icons/ri";
+import { FaCircle } from "react-icons/fa";
+
+import { IoTriangle } from "react-icons/io5";
 import TemplateDesign from "./TemplateDesign";
 const ToolbarExtentded = ({ show, setShow, state }) => {
   return (
@@ -23,7 +26,13 @@ const ToolbarExtentded = ({ show, setShow, state }) => {
               <TemplateDesign />
             </div>
           )}
-          {state === "shape" && <div >shape</div>}
+          {state === "shape" && (
+            <div className="grid grid-cols-3">
+              <LiaSquareSolid className='size-[100px] cursor-pointer ' />
+              <FaCircle className='size-[90px] cursor-pointer ' />
+              <IoTriangle className='size-[90px] cursor-pointer ' />
+            </div>
+          )}
           {state === "image" && <div>image</div>}
           {state === "text" && <div>text</div>}
           {state === "project" && <div>project</div>}
