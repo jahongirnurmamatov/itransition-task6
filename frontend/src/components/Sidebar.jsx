@@ -6,7 +6,6 @@ import { FaHome } from "react-icons/fa";
 import { GrTemplate } from "react-icons/gr";
 const Sidebar = () => {
   const { pathname } = useLocation();
-  console.log(pathname)
   return (
     <div className="w-full flex">
       <div className="w-[300px] p-5 h-[calc(100vh-70px)] fixed ">
