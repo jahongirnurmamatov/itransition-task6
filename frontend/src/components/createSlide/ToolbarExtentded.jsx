@@ -5,6 +5,7 @@ import { FaCircle } from "react-icons/fa";
 
 import { IoTriangle } from "react-icons/io5";
 import TemplateDesign from "./TemplateDesign";
+import MyImages from "./MyImages";
 const ToolbarExtentded = ({ show, setShow, state }) => {
   return (
     <div className="h-full w-[calc(100%-75px)]">
@@ -28,12 +29,16 @@ const ToolbarExtentded = ({ show, setShow, state }) => {
           )}
           {state === "shape" && (
             <div className="grid grid-cols-3">
-              <LiaSquareSolid className='size-[100px] cursor-pointer ' />
-              <FaCircle className='size-[90px] cursor-pointer ' />
-              <IoTriangle className='size-[90px] cursor-pointer ' />
+              <LiaSquareSolid className="size-[100px] cursor-pointer " />
+              <FaCircle className="size-[90px] cursor-pointer " />
+              <IoTriangle className="size-[90px] cursor-pointer " />
             </div>
           )}
-          {state === "image" && <div>image</div>}
+          {state === "image" && (
+            <div>
+              <MyImages />
+            </div>
+          )}
           {state === "text" && <div>text</div>}
           {state === "project" && <div>project</div>}
           {state === "initImage" && <div>put image</div>}
