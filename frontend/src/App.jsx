@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 
 import Projects from "./pages/Projects";
+import CreateDesign from "./pages/CreateDesign";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/projects" element={<Projects />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/create-design" element={<CreateDesign />} />
       </Routes>
     </div>
   );
