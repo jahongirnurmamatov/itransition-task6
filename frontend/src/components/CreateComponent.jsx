@@ -1,5 +1,5 @@
 import React from "react";
-
+import { FaTrashAlt } from "react-icons/fa";
 const CreateComponent = ({ info, current_component, removeComponent }) => {
   const randValue = Math.floor(Math.random() * 100);
   let html = "";
@@ -37,7 +37,17 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
           left: info.left + "px",
         }}
         className="absolute group hover:border-[2px] hover:border-indigo-500"
-      ></div>
+      >
+        {current_component.id === info.id && (
+          <div
+            onClick={() => removeComponent(info.id)}
+            className="absolute p-1 bg-gray-800 top-0 cursor-pointer group-hover:block hidden rounded-md"
+          >
+            {" "}
+            <FaTrashAlt />{" "}
+          </div>
+        )}
+      </div>
     );
   }
   return html;

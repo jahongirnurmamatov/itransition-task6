@@ -20,8 +20,9 @@ const CreateSlide = () => {
     });
   };
 
-  const removeComponent = () => {
-    console.log("remove component");
+  const removeComponent = (id) => {
+    const temp = components.filter(c=>c.id!==current_component.id);
+    setComponenets([...temp]);
   };
 
   const moveElement = () => {
