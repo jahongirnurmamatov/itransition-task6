@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 
 import Projects from "./pages/Projects";
-import CreateDesign from "./pages/CreateDesign";
+import CreateSlide from "./pages/CreateSlide";
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
           <Route path="/projects" element={<Projects />} />
         </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/create-design" element={<CreateDesign />} />
+        <Route path="/create-slide" element={<CreateSlide />} />
       </Routes>
     </div>
   );

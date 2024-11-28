@@ -14,7 +14,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-4 justify-center items-center relative">
             <button
-              onClick={() => navigate("/create-design")}
+              onClick={() => navigate("/create-slide")}
               className="py-2 px-6 overflow-hidden text-center hidden hover:bg-[#9553f8] lg:block bg-[#8b3dff] text-white rounded-md"
             >
               Start Slides

@@ -1,5 +1,5 @@
-import CreateComponent from '@/components/CreateComponent';
 import React, { useRef } from 'react'
+import CreateComponent from './CreateComponent';
 
 const CreateDesign = () => {
     const ref = useRef();
