@@ -7,6 +7,7 @@ import CreateComponent from "@/components/CreateComponent";
 const CreateSlide = () => {
   const [state, setState] = useState("");
   const [current_component, setCurrentComponent] = useState("");
+  const [image,setImage]=useState('');
   const [show, setShow] = useState({
     status: true,
     name: "",
@@ -30,6 +31,14 @@ const CreateSlide = () => {
     console.log("move element");
   };
 
+  const removeBackground = ()=>{
+    const com = components.find(c=>c.id ===current_component.id);
+    const temp = components.filter(c=>c.id!==current_component.id);
+    com.image = '';
+    setImage='';
+    setComponenets([...temp,com])
+  }
+
   const [components, setComponenets] = useState([
     {
       name: "main_frame",
@@ -43,14 +52,31 @@ const CreateSlide = () => {
       setCurrentComponent: (a) => setCurrentComponent(a),
     },
   ]);
-  console.log(current_component);
+  
+  const createShape = (name,type)=>{
+    const style={
+        id:components.length+1,
+        name,
+        type,
+        left:10,
+        top:20,
+        opacity:1,
+        width:200,
+        height:150,
+        z_index:2,
+        color: "green",
+        setCurrentComponent:(a)=>setCurrentComponent(a),
+        removeBackground:()=>setImage('')
+    }
+    setComponenets([...components,style])
+  }
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
       <div className="flex h-[calc(100%-60px)] w-screen">
         <Toolbar setElements={setElements} show={show} />
         <div className="h-full w-[calc(100%-75px)]">
-          <ToolbarExtentded show={show} setShow={setShow} state={state} />
+          <ToolbarExtentded show={show} setShow={setShow} state={state} createShape={createShape}/>
 
           <div className="w-full h-full flex justify-between">
             <div

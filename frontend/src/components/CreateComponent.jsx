@@ -21,6 +21,25 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
       </div>
     );
   }
+  if (info.name === "shape" && info.type === "rect") {
+    html = (
+      <div
+        id={randValue}
+        onClick={() => info.setCurrentComponent(info)}
+        style={{
+          width: info.width + "px",
+          height: info.height + "px",
+          backgroundColor: info.color || "green",
+          borderRadius: info.radius + "%",
+          opacity: info.opacity,
+          zIndex: info.z_index,
+          top: info.top + "px",
+          left: info.left + "px",
+        }}
+        className="absolute group hover:border-[2px] hover:border-indigo-500"
+      ></div>
+    );
+  }
   return html;
 };
 

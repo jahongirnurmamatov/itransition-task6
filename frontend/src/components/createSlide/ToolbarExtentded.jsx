@@ -13,7 +13,7 @@ const ToolbarExtentded = ({
   show,
   setShow,
   state,
- 
+  createShape
 }) => {
   return (
     <div
@@ -36,9 +36,9 @@ const ToolbarExtentded = ({
         )}
         {state === "shape" && (
           <div className="grid grid-cols-3">
-            <LiaSquareSolid className="size-[100px] cursor-pointer " />
-            <FaCircle className="size-[90px] cursor-pointer " />
-            <IoTriangle className="size-[90px] cursor-pointer " />
+            <LiaSquareSolid onClick={()=>createShape('shape','rect')} className="size-[100px] cursor-pointer " />
+            <FaCircle onClick={()=>createShape('shape','circle')} className="size-[90px] cursor-pointer " />
+            <IoTriangle onClick={()=>createShape('shape','triangle')} className="size-[90px] cursor-pointer " />
           </div>
         )}
         {state === "image" && (
