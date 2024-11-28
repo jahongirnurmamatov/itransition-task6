@@ -8,8 +8,8 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
       <div
         className="hover:border-[2px] hover:border-indigo-500 shadow-md"
         style={{
-          width: info.height + "px",
-          height: info.width + "px",
+          width: info.width + "px",
+          height: info.height + "px",
           backgroundColor: info.color || '#fff',
           zIndex: info.z_index,
         }}
@@ -21,6 +21,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
       </div>
     );
   }
+  console.log(html)
   return html;
 };
 
