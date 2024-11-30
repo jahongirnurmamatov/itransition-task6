@@ -1,9 +1,11 @@
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import Element from "./createSlide/Element";
 
 const CreateComponent = ({ info, current_component, removeComponent }) => {
   const renderShape = (info) => {
-    // General styles for all shapes
+    const isCurrent = current_component.id === info.id;
+
     const commonStyles = {
       width: info.type === "triangle" ? "0" : info.width + "px",
       height: info.type === "triangle" ? "0" : info.height + "px",
@@ -16,7 +18,6 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
       borderRadius: info.type === "circle" ? "50%" : "0%",
     };
 
-    // Specific styles for triangle
     const triangleStyles =
       info.type === "triangle"
         ? {
@@ -30,13 +31,15 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
       <div
         onClick={() => info.setCurrentComponent(info)}
         style={{ ...commonStyles, ...triangleStyles }}
-        className="group hover:border-[2px] hover:border-indigo-500"
+        className={`group hover:border-[2px] hover:border-indigo-500 ${isCurrent ? "relative" : ""}`}
       >
-        {/* Always visible delete icon for the current component */}
-        {current_component.id === info.id && (
+        {/* Snap Element */}
+        <Element info={info} isCurrent={isCurrent} />
+        {/* Delete Icon */}
+        {isCurrent && (
           <div
             onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering parent click
+              e.stopPropagation(); // Prevent parent click
               removeComponent(info.id);
             }}
             className="absolute p-1 bg-gray-800 top-2 right-2 cursor-pointer rounded-md"
