@@ -4,6 +4,8 @@ import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
 import { Stage, Layer, Rect, Circle, RegularPolygon } from "react-konva";
 import ResizableRect from "@/components/createSlide/shapes/Rectangle";
+import ResizableTriangle from "@/components/createSlide/shapes/Triangle";
+import ResizableCircle from "@/components/createSlide/shapes/Circle";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -92,7 +94,7 @@ const CreateSlide = () => {
     const newColor = e.target.value;
 
     if (editWhiteboard) {
-      setBgColor(newColor); // Update whiteboard background color
+      setBgColor(newColor);
     } else if (selectedShapeId) {
       setShapes((prev) =>
         prev.map((shape) =>
@@ -100,12 +102,12 @@ const CreateSlide = () => {
         )
       );
     } else {
-      setDefaultShapeColor(newColor); // Update default shape color
+      setDefaultShapeColor(newColor); 
     }
 
     setColor(newColor);
   };
-  const [users, setUsers] = useState([]); // List of connected users
+  const [users, setUsers] = useState([]); 
 
   return (
     <div className="min-w-screen h-screen bg-black">
@@ -151,41 +153,36 @@ const CreateSlide = () => {
                       );
                     } else if (shape.type === "circle") {
                       return (
-                        <Circle
+                        <ResizableCircle
                           key={shape.id}
-                          x={shape.x}
-                          y={shape.y}
-                          radius={shape.radius}
-                          fill={shape.color}
-                          stroke={
-                            selectedShapeId === shape.id
-                              ? "blue"
-                              : "transparent"
-                          }
-                          strokeWidth={selectedShapeId === shape.id ? 3 : 0}
-                          draggable
-                          onClick={() => handleSelect(shape.id)}
+                          shape={shape}
+                          isSelected={selectedShapeId === shape.id}
+                          onSelect={() => handleSelect(shape.id)}
                           onDragMove={(e) => handleDragMove(shape.id, e)}
+                          onResize={(newAttrs) =>
+                            setShapes((prevShapes) =>
+                              prevShapes.map((s) =>
+                                s.id === shape.id ? { ...s, ...newAttrs } : s
+                              )
+                            )
+                          }
                         />
                       );
                     } else if (shape.type === "triangle") {
                       return (
-                        <RegularPolygon
+                        <ResizableTriangle
                           key={shape.id}
-                          x={shape.x}
-                          y={shape.y}
-                          sides={shape.sides}
-                          radius={shape.radius}
-                          fill={shape.color}
-                          stroke={
-                            selectedShapeId === shape.id
-                              ? "blue"
-                              : "transparent"
-                          }
-                          strokeWidth={selectedShapeId === shape.id ? 3 : 0}
-                          draggable
-                          onClick={() => handleSelect(shape.id)}
+                          shape={shape}
+                          isSelected={selectedShapeId === shape.id}
+                          onSelect={() => handleSelect(shape.id)}
                           onDragMove={(e) => handleDragMove(shape.id, e)}
+                          onResize={(newAttrs) =>
+                            setShapes((prevShapes) =>
+                              prevShapes.map((s) =>
+                                s.id === shape.id ? { ...s, ...newAttrs } : s
+                              )
+                            )
+                          }
                         />
                       );
                     }

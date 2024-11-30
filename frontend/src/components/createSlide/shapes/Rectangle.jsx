@@ -2,7 +2,7 @@ import React from 'react'
 import { Rect } from 'react-konva';
 
 const ResizableRect = ({ shape, isSelected, onSelect, onResize, onDragMove }) => {
-    const handleSize = 10; // Size of the resize handles
+    const handleSize = 10; 
     const { x, y, width, height, color } = shape;
   
     return (
