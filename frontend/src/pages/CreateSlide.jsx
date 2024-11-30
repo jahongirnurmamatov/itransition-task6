@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/createSlide/Header";
 import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
@@ -85,6 +85,27 @@ const CreateSlide = () => {
     setColor(newColor);
   };
   const [users, setUsers] = useState([]);
+
+  const deleteShape = () => {
+    if (!selectedShapeId) return;
+    setShapes((prevShapes) =>
+      prevShapes.filter((shape) => shape.id !== selectedShapeId)
+    );
+    setSelectedShapeId(null);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Delete" || e.key === "Backspace") {
+        deleteShape();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedShapeId]);
 
   return (
     <div className="min-w-screen h-screen bg-black">
