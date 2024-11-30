@@ -3,6 +3,7 @@ import Header from "@/components/createSlide/Header";
 import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
 import { Stage, Layer, Rect, Circle, RegularPolygon } from "react-konva";
+import ResizableRect from "@/components/createSlide/shapes/Rectangle";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -105,7 +106,7 @@ const CreateSlide = () => {
     setColor(newColor);
   };
   const [users, setUsers] = useState([]); // List of connected users
- 
+
   return (
     <div className="min-w-screen h-screen bg-black">
       <Header />
@@ -133,22 +134,19 @@ const CreateSlide = () => {
                   {shapes.map((shape) => {
                     if (shape.type === "rect") {
                       return (
-                        <Rect
+                        <ResizableRect
                           key={shape.id}
-                          x={shape.x}
-                          y={shape.y}
-                          width={shape.width}
-                          height={shape.height}
-                          fill={shape.color}
-                          stroke={
-                            selectedShapeId === shape.id
-                              ? "blue"
-                              : "transparent"
-                          } // Highlight
-                          strokeWidth={selectedShapeId === shape.id ? 3 : 0} // Border width
-                          draggable
-                          onClick={() => handleSelect(shape.id)} // Select shape
+                          shape={shape}
+                          isSelected={selectedShapeId === shape.id}
+                          onSelect={() => handleSelect(shape.id)}
                           onDragMove={(e) => handleDragMove(shape.id, e)}
+                          onResize={(newAttrs) =>
+                            setShapes((prevShapes) =>
+                              prevShapes.map((s) =>
+                                s.id === shape.id ? { ...s, ...newAttrs } : s
+                              )
+                            )
+                          }
                         />
                       );
                     } else if (shape.type === "circle") {
