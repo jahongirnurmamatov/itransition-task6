@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import Header from "@/components/createSlide/Header";
 import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
-import { Stage, Layer, Rect, Circle, RegularPolygon } from "react-konva";
+import { Stage, Layer,Image } from "react-konva";
 import ResizableRect from "@/components/createSlide/shapes/Rectangle";
 import ResizableTriangle from "@/components/createSlide/shapes/Triangle";
 import ResizableCircle from "@/components/createSlide/shapes/Circle";
@@ -27,6 +27,23 @@ const CreateSlide = () => {
   const [bgColor, setBgColor] = useState("#FFFFFF"); // Whiteboard background color
   const [editWhiteboard, setEditWhiteboard] = useState(false); // Toggle for whiteboard color editing
   const [defaultShapeColor, setDefaultShapeColor] = useState("#000000");
+
+  const [backgroundSrc, setBackgroundSrc] = useState(""); // State to store the background image source
+  const backgroundImageRef = useRef(null); // Reference for the background Konva.Image
+
+  // Function to load the background image
+  const loadBackground = (src) => {
+    const img = new window.Image();
+    img.src = src;
+    img.onload = () => {
+      if (backgroundImageRef.current) {
+        backgroundImageRef.current.image(img); 
+        backgroundImageRef.current.getLayer().batchDraw(); 
+      }
+    };
+  };
+  
+
   // Function to add shapes
   const addShape = (type) => {
     const id = `${type}-${Date.now()}`;
@@ -119,6 +136,10 @@ const CreateSlide = () => {
               state={state}
               setShow={setShow}
               addShape={addShape}
+              setBackground={(src) => {
+                setBackgroundSrc(src);
+                loadBackground(src); // Update the background
+              }}
             />
             <div className="w-full flex justify-between h-full ml-30">
               <Stage
@@ -131,6 +152,11 @@ const CreateSlide = () => {
                 }}
               >
                 <Layer>
+                  <Image
+                    ref={backgroundImageRef} // Reference to access the Konva.Image
+                    width={750}
+                    height={420}
+                  />
                   {shapes.map((shape) => {
                     if (shape.type === "rect") {
                       return (

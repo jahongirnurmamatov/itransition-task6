@@ -12,7 +12,8 @@ const ToolbarExtentded = ({
   show,
   setShow,
   state,
-  addShape
+  addShape,
+  setBackground
 }) => {
 
   return (
@@ -70,7 +71,7 @@ const ToolbarExtentded = ({
         )}
         {state === "background" && (
           <div>
-            <Backgrounds />
+             <Backgrounds onSelectBackground={setBackground} />
           </div>
         )}
       </div>
