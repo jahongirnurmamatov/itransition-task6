@@ -2,20 +2,19 @@ import React from "react";
 import { LiaSquareSolid } from "react-icons/lia";
 import { RiArrowLeftWideLine } from "react-icons/ri";
 import { FaCircle } from "react-icons/fa";
-
 import { IoTriangle } from "react-icons/io5";
 import TemplateDesign from "./TemplateDesign";
 import MyImages from "./MyImages";
 import Images from "./Images";
 import Backgrounds from "./Backgrounds";
-import CreateComponent from "../CreateComponent";
+
 const ToolbarExtentded = ({
   show,
   setShow,
   state,
-  createShape,
-  setImage
+  addShape
 }) => {
+
   return (
     <div
       className={`${
@@ -29,22 +28,31 @@ const ToolbarExtentded = ({
       >
         <RiArrowLeftWideLine />
       </div>
-      <div className="">
+      <div>
         {state === "design" && (
-          <div className="">
+          <div>
             <TemplateDesign />
           </div>
         )}
         {state === "shape" && (
-          <div className="grid grid-cols-3">
-            <LiaSquareSolid onClick={()=>createShape('shape','rect')} className="size-[100px] cursor-pointer " />
-            <FaCircle onClick={()=>createShape('shape','circle')} className="size-[90px] cursor-pointer " />
-            <IoTriangle onClick={()=>createShape('shape','triangle')} className="size-[90px] cursor-pointer " />
+          <div className="grid grid-cols-3 gap-4">
+            <LiaSquareSolid
+              onClick={() => addShape("rect")}
+              className="size-[100px] cursor-pointer text-gray-300 hover:text-gray-100"
+            />
+            <FaCircle
+              onClick={() => addShape("circle")}
+              className="size-[90px] cursor-pointer text-gray-300 hover:text-gray-100"
+            />
+            <IoTriangle
+              onClick={() => addShape("triangle")}
+              className="size-[90px] cursor-pointer text-gray-300 hover:text-gray-100"
+            />
           </div>
         )}
         {state === "image" && (
           <div>
-            <MyImages />
+            <MyImages onSelectImage={(src) => addImage(src)} />
           </div>
         )}
         {state === "text" && (
@@ -57,7 +65,7 @@ const ToolbarExtentded = ({
         {state === "project" && <div>project</div>}
         {state === "initImage" && (
           <div className="h-[88vh] overflow-x-auto flex justify-start items-start">
-            <Images setImage={setImage} />
+            <Images onSelectImage={(src) => addImage(src)} />
           </div>
         )}
         {state === "background" && (
