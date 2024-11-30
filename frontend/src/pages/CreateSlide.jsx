@@ -1,12 +1,13 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "@/components/createSlide/Header";
 import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
-import { Stage, Layer,Image } from "react-konva";
+import { Stage, Layer, Image } from "react-konva";
 import ResizableRect from "@/components/createSlide/shapes/Rectangle";
 import ResizableTriangle from "@/components/createSlide/shapes/Triangle";
 import ResizableCircle from "@/components/createSlide/shapes/Circle";
 import Rightbar from "@/components/createSlide/Rightbar";
+import { useWhiteboardStore } from "@/store/useKonvaStore";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -21,15 +22,24 @@ const CreateSlide = () => {
       name,
     });
   };
-  const [shapes, setShapes] = useState([]);
-  const [selectedShapeId, setSelectedShapeId] = useState(null);
   const [color, setColor] = useState("#000000");
-  const [bgColor, setBgColor] = useState("#FFFFFF"); // Whiteboard background color
-  const [editWhiteboard, setEditWhiteboard] = useState(false); // Toggle for whiteboard color editing
+  // Toggle for whiteboard color editing
   const [defaultShapeColor, setDefaultShapeColor] = useState("#000000");
 
-  const [backgroundSrc, setBackgroundSrc] = useState(""); // State to store the background image source
-  const backgroundImageRef = useRef(null); // Reference for the background Konva.Image
+  const {
+    bgColor,
+    shapes,
+    addShape,
+    deleteShape,
+    selectShape,
+    selectedShapeId,
+    updateShapePosition,
+    updateShapeAttributes,
+    setBackgroundSrc,
+  } = useWhiteboardStore();
+
+  const backgroundImageRef = useRef(null);
+  const [users, setUsers] = useState([]);
 
   // Function to load the background image
   const loadBackground = (src) => {
@@ -37,78 +47,10 @@ const CreateSlide = () => {
     img.src = src;
     img.onload = () => {
       if (backgroundImageRef.current) {
-        backgroundImageRef.current.image(img); 
-        backgroundImageRef.current.getLayer().batchDraw(); 
+        backgroundImageRef.current.image(img);
+        backgroundImageRef.current.getLayer().batchDraw();
       }
     };
-  };
-  
-
-  // Function to add shapes
-  const addShape = (type) => {
-    const id = `${type}-${Date.now()}`;
-    const newShape =
-      type === "rect"
-        ? {
-            id,
-            type,
-            x: 50,
-            y: 50,
-            width: 100,
-            height: 100,
-            color: defaultShapeColor,
-          }
-        : type === "circle"
-        ? { id, type, x: 100, y: 100, radius: 50, color: defaultShapeColor }
-        : {
-            id,
-            type,
-            x: 150,
-            y: 150,
-            sides: 3,
-            radius: 60,
-            color: defaultShapeColor,
-          }; // triangle
-    setShapes((prev) => [...prev, newShape]);
-  };
-
-  const handleSelect = (id) => {
-    setSelectedShapeId(id);
-  };
-
-  const handleDragMove = (id, e) => {
-    setShapes((prev) =>
-      prev.map((shape) =>
-        shape.id === id ? { ...shape, x: e.target.x(), y: e.target.y() } : shape
-      )
-    );
-  };
-
-  const handleColorChange = (e) => {
-    const newColor = e.target.value;
-
-    if (editWhiteboard) {
-      setBgColor(newColor);
-    } else if (selectedShapeId) {
-      setShapes((prev) =>
-        prev.map((shape) =>
-          shape.id === selectedShapeId ? { ...shape, color: newColor } : shape
-        )
-      );
-    } else {
-      setDefaultShapeColor(newColor);
-    }
-
-    setColor(newColor);
-  };
-  const [users, setUsers] = useState([]);
-
-  const deleteShape = () => {
-    if (!selectedShapeId) return;
-    setShapes((prevShapes) =>
-      prevShapes.filter((shape) => shape.id !== selectedShapeId)
-    );
-    setSelectedShapeId(null);
   };
 
   useEffect(() => {
@@ -157,21 +99,23 @@ const CreateSlide = () => {
                     width={750}
                     height={420}
                   />
-                  {shapes.map((shape) => {
+                  {shapes?.map((shape) => {
                     if (shape.type === "rect") {
                       return (
                         <ResizableRect
                           key={shape.id}
                           shape={shape}
                           isSelected={selectedShapeId === shape.id}
-                          onSelect={() => handleSelect(shape.id)}
-                          onDragMove={(e) => handleDragMove(shape.id, e)}
-                          onResize={(newAttrs) =>
-                            setShapes((prevShapes) =>
-                              prevShapes.map((s) =>
-                                s.id === shape.id ? { ...s, ...newAttrs } : s
-                              )
+                          onSelect={() => selectShape(shape.id)}
+                          onDragMove={(e) =>
+                            updateShapePosition(
+                              shape.id,
+                              e.target.x(),
+                              e.target.y()
                             )
+                          }
+                          onResize={(newAttrs) =>
+                            updateShapeAttributes(shape.id, newAttrs)
                           }
                         />
                       );
@@ -181,14 +125,16 @@ const CreateSlide = () => {
                           key={shape.id}
                           shape={shape}
                           isSelected={selectedShapeId === shape.id}
-                          onSelect={() => handleSelect(shape.id)}
-                          onDragMove={(e) => handleDragMove(shape.id, e)}
-                          onResize={(newAttrs) =>
-                            setShapes((prevShapes) =>
-                              prevShapes.map((s) =>
-                                s.id === shape.id ? { ...s, ...newAttrs } : s
-                              )
+                          onSelect={() => selectShape(shape.id)}
+                          onDragMove={(e) =>
+                            updateShapePosition(
+                              shape.id,
+                              e.target.x(),
+                              e.target.y()
                             )
+                          }
+                          onResize={(newAttrs) =>
+                            updateShapeAttributes(shape.id, newAttrs)
                           }
                         />
                       );
@@ -198,14 +144,16 @@ const CreateSlide = () => {
                           key={shape.id}
                           shape={shape}
                           isSelected={selectedShapeId === shape.id}
-                          onSelect={() => handleSelect(shape.id)}
-                          onDragMove={(e) => handleDragMove(shape.id, e)}
-                          onResize={(newAttrs) =>
-                            setShapes((prevShapes) =>
-                              prevShapes.map((s) =>
-                                s.id === shape.id ? { ...s, ...newAttrs } : s
-                              )
+                          onSelect={() => selectShape(shape.id)}
+                          onDragMove={(e) =>
+                            updateShapePosition(
+                              shape.id,
+                              e.target.x(),
+                              e.target.y()
                             )
+                          }
+                          onResize={(newAttrs) =>
+                            updateShapeAttributes(shape.id, newAttrs)
                           }
                         />
                       );
@@ -215,14 +163,7 @@ const CreateSlide = () => {
                 </Layer>
               </Stage>
 
-              <Rightbar
-                users={users}
-                editWhiteboard={editWhiteboard}
-                setEditWhiteboard={setEditWhiteboard}
-                color={color}
-                bgColor={bgColor}
-                handleColorChange={handleColorChange}
-              />
+              <Rightbar users={users} />
             </div>
           </div>
         </div>
