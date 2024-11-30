@@ -6,6 +6,7 @@ import { Stage, Layer, Rect, Circle, RegularPolygon } from "react-konva";
 import ResizableRect from "@/components/createSlide/shapes/Rectangle";
 import ResizableTriangle from "@/components/createSlide/shapes/Triangle";
 import ResizableCircle from "@/components/createSlide/shapes/Circle";
+import Rightbar from "@/components/createSlide/Rightbar";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -54,30 +55,6 @@ const CreateSlide = () => {
     setShapes((prev) => [...prev, newShape]);
   };
 
-  const handleResizeShape = () => {
-    if (!selectedShapeId) return;
-
-    setShapes((prevShapes) =>
-      prevShapes.map((shape) => {
-        if (shape.id === selectedShapeId) {
-          if (shape.type === "rect") {
-            return {
-              ...shape,
-              width: shape.width + 10,
-              height: shape.height + 10,
-            };
-          } else if (shape.type === "circle" || shape.type === "triangle") {
-            return {
-              ...shape,
-              radius: shape.radius + 10,
-            };
-          }
-        }
-        return shape;
-      })
-    );
-  };
-
   const handleSelect = (id) => {
     setSelectedShapeId(id);
   };
@@ -102,12 +79,12 @@ const CreateSlide = () => {
         )
       );
     } else {
-      setDefaultShapeColor(newColor); 
+      setDefaultShapeColor(newColor);
     }
 
     setColor(newColor);
   };
-  const [users, setUsers] = useState([]); 
+  const [users, setUsers] = useState([]);
 
   return (
     <div className="min-w-screen h-screen bg-black">
@@ -191,64 +168,15 @@ const CreateSlide = () => {
                 </Layer>
               </Stage>
 
-              <div className="w-[300px] mr-0 bg-gray-900 text-white p-4">
-                <h3 className="text-lg font-bold mb-4">Sidebar</h3>
-
-                {/* Section 1: Color Picker */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold mb-2">Change Color</h4>
-                  <label
-                    className="block w-8 h-8 rounded cursor-pointer border relative"
-                    style={{
-                      backgroundColor: editWhiteboard ? bgColor : color,
-                    }}
-                  >
-                    {/* Hidden input */}
-                    <input
-                      type="color"
-                      value={editWhiteboard ? bgColor : color}
-                      onChange={handleColorChange}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                  </label>
-                  <button
-                    className="mt-4 px-4 py-2 bg-gray-800 rounded text-sm"
-                    onClick={() => setEditWhiteboard((prev) => !prev)}
-                  >
-                    {editWhiteboard ? "Edit Shape" : "Edit Whiteboard"}
-                  </button>
-                  <h4 className="text-sm font-semibold mb-2">
-                    Resize Selected Shape
-                  </h4>
-                  <button
-                    onClick={handleResizeShape}
-                    className="px-4 py-2 bg-gray-800 text-white rounded"
-                    disabled={!selectedShapeId} // Disable if no shape is selected
-                  >
-                    Increase Size
-                  </button>
-                </div>
-
-                {/* Section 2: Connected Users */}
-                <div>
-                  <h4 className="text-sm font-semibold mb-2">
-                    Connected Users
-                  </h4>
-                  <ul className="space-y-2">
-                    {users.map((user, index) => (
-                      <li
-                        key={index}
-                        className="p-2 bg-gray-800 rounded-lg text-sm truncate"
-                      >
-                        {user}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <Rightbar
+                users={users}
+                editWhiteboard={editWhiteboard}
+                setEditWhiteboard={setEditWhiteboard}
+                color={color}
+                bgColor={bgColor}
+                handleColorChange={handleColorChange}
+              />
             </div>
-
-            {/* sidebar here*/}
           </div>
         </div>
       </div>
