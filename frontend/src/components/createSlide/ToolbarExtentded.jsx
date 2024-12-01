@@ -7,13 +7,14 @@ import TemplateDesign from "./TemplateDesign";
 import MyImages from "./MyImages";
 import Images from "./Images";
 import Backgrounds from "./Backgrounds";
+import Text from "./text/Text";
 
 const ToolbarExtentded = ({
   show,
   setShow,
   state,
   addShape,
-  setBackground
+  setBackground,
 }) => {
 
   return (
@@ -56,13 +57,7 @@ const ToolbarExtentded = ({
             <MyImages onSelectImage={(src) => addImage(src)} />
           </div>
         )}
-        {state === "text" && (
-          <div className="grid grid-cols-1 gap-2">
-            <div className="bg-[#3c3c3d] cursor-pointer font-bold p-3 flex items-center justify-center text-white text-xl rounded-sm">
-              <h2>Add a text</h2>
-            </div>
-          </div>
-        )}
+        {state === "text" && <Text />}
         {state === "project" && <div>project</div>}
         {state === "initImage" && (
           <div className="h-[88vh] overflow-x-auto flex justify-start items-start">
@@ -71,7 +66,7 @@ const ToolbarExtentded = ({
         )}
         {state === "background" && (
           <div>
-             <Backgrounds onSelectBackground={setBackground} />
+            <Backgrounds onSelectBackground={setBackground} />
           </div>
         )}
       </div>

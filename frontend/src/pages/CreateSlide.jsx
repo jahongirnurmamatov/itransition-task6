@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import Header from "@/components/createSlide/Header";
 import Toolbar from "@/components/createSlide/Toolbar";
 import ToolbarExtentded from "@/components/createSlide/ToolbarExtentded";
-import { Stage, Layer, Image } from "react-konva";
+import { Stage, Layer, Image, Text } from "react-konva";
 import ResizableRect from "@/components/createSlide/shapes/Rectangle";
 import ResizableTriangle from "@/components/createSlide/shapes/Triangle";
 import ResizableCircle from "@/components/createSlide/shapes/Circle";
 import Rightbar from "@/components/createSlide/Rightbar";
 import { useWhiteboardStore } from "@/store/useKonvaStore";
+import { useTextStore } from "@/store/textStore";
+import ResizableText from "@/components/createSlide/text/ResizableText";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -40,6 +42,13 @@ const CreateSlide = () => {
 
   const backgroundImageRef = useRef(null);
   const [users, setUsers] = useState([]);
+  const {
+    texts,
+    updateTextPosition,
+    selectedTextId,
+    selectText,
+    deleteTextById
+  } = useTextStore((state) => state);
 
   // Function to load the background image
   const loadBackground = (src) => {
@@ -94,11 +103,28 @@ const CreateSlide = () => {
                 }}
               >
                 <Layer>
+                  {/* backgroun image */}
                   <Image
                     ref={backgroundImageRef} // Reference to access the Konva.Image
                     width={750}
                     height={420}
                   />
+                  {/* text adding  */}
+                  {texts?.map((text) => (
+                     <ResizableText
+                     key={text.id}
+                     text={text}
+                     isSelected={selectedTextId === text.id}
+                     onSelect={() => selectText(text.id)}
+                     onDragMove={(e) =>
+                       updateTextPosition(text.id, e.target.x(), e.target.y())
+                     }
+                     onTextChange={(newText) =>
+                       updateTextProperties({ id: text.id, text: newText })
+                     }
+                     onDelete={() => deleteTextById(text.id)} // New delete handler
+                   />
+                  ))}
                   {shapes?.map((shape) => {
                     if (shape.type === "rect") {
                       return (
