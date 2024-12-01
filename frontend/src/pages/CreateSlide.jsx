@@ -24,9 +24,6 @@ const CreateSlide = () => {
       name,
     });
   };
-  const [color, setColor] = useState("#000000");
-  // Toggle for whiteboard color editing
-  const [defaultShapeColor, setDefaultShapeColor] = useState("#000000");
 
   const {
     bgColor,
@@ -103,6 +100,7 @@ const CreateSlide = () => {
                 }}
               >
                 <Layer>
+                 
                   {/* backgroun image */}
                   <Image
                     ref={backgroundImageRef} // Reference to access the Konva.Image
