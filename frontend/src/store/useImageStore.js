@@ -1,5 +1,4 @@
-// useImageStore.js
-import create from 'zustand';
+import {create} from 'zustand';
 
 export const useImageStore = create((set) => ({
   images: [],

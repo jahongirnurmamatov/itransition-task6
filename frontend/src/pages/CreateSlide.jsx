@@ -10,6 +10,8 @@ import Rightbar from "@/components/createSlide/Rightbar";
 import { useWhiteboardStore } from "@/store/useKonvaStore";
 import { useTextStore } from "@/store/textStore";
 import ResizableText from "@/components/createSlide/text/ResizableText";
+import ResizableImage from "@/components/createSlide/image/ResizableImage";
+import { useImageStore } from "@/store/useImageStore";
 
 const CreateSlide = () => {
   const [state, setState] = useState("");
@@ -37,6 +39,9 @@ const CreateSlide = () => {
     setBackgroundSrc,
   } = useWhiteboardStore();
 
+  // image props
+  const { images } = useImageStore();
+
   const backgroundImageRef = useRef(null);
   const [users, setUsers] = useState([]);
   const {
@@ -44,7 +49,7 @@ const CreateSlide = () => {
     updateTextPosition,
     selectedTextId,
     selectText,
-    deleteTextById
+    deleteTextById,
   } = useTextStore((state) => state);
 
   // Function to load the background image
@@ -86,7 +91,7 @@ const CreateSlide = () => {
               addShape={addShape}
               setBackground={(src) => {
                 setBackgroundSrc(src);
-                loadBackground(src); // Update the background
+                loadBackground(src); 
               }}
             />
             <div className="w-full flex justify-between h-full ml-30">
@@ -100,28 +105,27 @@ const CreateSlide = () => {
                 }}
               >
                 <Layer>
-                 
                   {/* backgroun image */}
                   <Image
-                    ref={backgroundImageRef} // Reference to access the Konva.Image
+                    ref={backgroundImageRef} 
                     width={750}
                     height={420}
                   />
                   {/* text adding  */}
                   {texts?.map((text) => (
-                     <ResizableText
-                     key={text.id}
-                     text={text}
-                     isSelected={selectedTextId === text.id}
-                     onSelect={() => selectText(text.id)}
-                     onDragMove={(e) =>
-                       updateTextPosition(text.id, e.target.x(), e.target.y())
-                     }
-                     onTextChange={(newText) =>
-                       updateTextProperties({ id: text.id, text: newText })
-                     }
-                     onDelete={() => deleteTextById(text.id)} // New delete handler
-                   />
+                    <ResizableText
+                      key={text.id}
+                      text={text}
+                      isSelected={selectedTextId === text.id}
+                      onSelect={() => selectText(text.id)}
+                      onDragMove={(e) =>
+                        updateTextPosition(text.id, e.target.x(), e.target.y())
+                      }
+                      onTextChange={(newText) =>
+                        updateTextProperties({ id: text.id, text: newText })
+                      }
+                      onDelete={() => deleteTextById(text.id)} // New delete handler
+                    />
                   ))}
                   {shapes?.map((shape) => {
                     if (shape.type === "rect") {
@@ -184,6 +188,14 @@ const CreateSlide = () => {
                     }
                     return null;
                   })}
+
+                  {/* images insert */}
+                  {images.map((image) => (
+                    <ResizableImage
+                      key={image.id}
+                      image={image}
+                    />
+                  ))}
                 </Layer>
               </Stage>
 

@@ -22,11 +22,14 @@ const Text = () => {
   const handleFontColorChange = (e) => {
     setFontColor(e.target.value);
     updateTextProperties({ fontColor: e.target.value });
+    // Add a style attribute to the text element
+    const textElement = document.getElementById("text-element");
+    textElement.style.color = e.target.value;
   };
 
   const handleAddText = () => {
     if (textInput.trim() === "") return; // Avoid adding empty text
-    addText({
+    const newText = {
       id: Date.now().toString(),
       text: textInput, // Use the text entered in the textarea
       fontSize: fontSize,
@@ -36,7 +39,8 @@ const Text = () => {
       y: 100, // Default position
       width: 200, // Default width
       height: 40, // Default height
-    });
+    };
+    addText(newText); // Add the new text to the state
     setTextInput(""); // Clear the textarea after adding the text
   };
 
@@ -50,6 +54,7 @@ const Text = () => {
       <div>
         <label className="text-sm text-gray-400">Enter Your Text</label>
         <textarea
+          id="text-element"
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
           className="w-full p-2 rounded mt-2 bg-[#3c3c3d] text-white"
@@ -92,8 +97,9 @@ const Text = () => {
         <input
           type="color"
           value={fontColor}
-          onChange={handleFontColorChange}
-          className="w-full p-2 rounded mt-2"
+          onChange={(e) => setFontColor(e.target.value)}
+          className="w-10 h-10 rounded-sm border-2 border-gray-400"
+          style={{ padding: 0, border: "none" }}
         />
       </div>
 

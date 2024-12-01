@@ -16,7 +16,7 @@ const ToolbarExtentded = ({
   addShape,
   setBackground,
 }) => {
-
+ 
   return (
     <div
       className={`${

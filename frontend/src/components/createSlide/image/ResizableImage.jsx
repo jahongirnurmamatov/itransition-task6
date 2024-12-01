@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Image, Transformer } from "react-konva";
 
 
-const ResizableImage = ({ image, onSelect, onDragMove, onTransformEnd, onDelete }) => {
+const ResizableImage = ({ image, onSelect, onDragMove, onTransformEnd }) => {
   const { selectedImageId, deleteImage } = useImageStore();
 
   const handleDeleteKey = (e) => {
